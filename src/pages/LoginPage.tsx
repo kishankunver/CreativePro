@@ -44,7 +44,7 @@ const LoginPage: React.FC = () => {
             <img 
               src="/Logo.png" 
               alt="CreativePro Logo" 
-              className="w-12 h-12 object-contain"
+              className="w-16 h-16 object-contain"
             />
           </div>
           <h1 className="text-white text-2xl font-bold">CreativePro</h1>
