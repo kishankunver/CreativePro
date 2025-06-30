@@ -85,7 +85,7 @@ const RecommendationsSection: React.FC = () => {
 
   const tabs = [
     { key: 'forYou', label: 'For You', icon: Heart, ideas: recommendations.forYou },
-    { key: 'trending', label: 'Trending', icon: TrendingUp, ideas: recommendations.trending },
+    /*{ key: 'trending', label: 'Trending', icon: TrendingUp, ideas: recommendations.trending },*/
     { key: 'similar', label: 'Similar', icon: Sparkles, ideas: recommendations.similar },
     { key: 'newInCategories', label: 'New', icon: Clock, ideas: recommendations.newInCategories }
   ] as const;
