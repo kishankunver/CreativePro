@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, MessageCircle, Calendar, TrendingUp, Flame } from 'lucide-react';
+import { ArrowUp, MessageCircle, Calendar, TrendingUp } from 'lucide-react';
 import { Idea } from '../types';
 import { useIdeas } from '../contexts/IdeaContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -57,28 +57,6 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
     ? Math.floor(verificationStatus.badge.credibilityScore / 10) 
     : 0;
 
-  // Mock trending calculation (in real app, this would be based on recent vote velocity)
-  const getTrendingInfo = () => {
-    const hoursSinceCreated = (Date.now() - idea.createdAt.getTime()) / (1000 * 60 * 60);
-    
-    // Only show trending for recent ideas (within 7 days)
-    if (hoursSinceCreated > 168) return null;
-    
-    // Mock trending calculation based on votes and recency
-    const trendingScore = Math.floor((idea.upvotes / Math.max(hoursSinceCreated, 1)) * 10);
-    
-    if (trendingScore > 5) {
-      return {
-        score: Math.min(trendingScore, 15), // Cap at +15
-        isHot: trendingScore > 10
-      };
-    }
-    
-    return null;
-  };
-
-  const trendingInfo = getTrendingInfo();
-
   return (
     <Link to={`/idea/${idea.id}`} className="block">
       <div className="bg-white rounded-xl lg:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 sm:p-8 lg:p-10 h-full flex flex-col relative border border-gray-100 hover:border-gray-200">
@@ -94,37 +72,17 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
           <span className={`text-xs sm:text-sm px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full font-semibold ${getCategoryColor(idea.category)}`}>
             {idea.category}
           </span>
-          
-          <div className="flex flex-col items-end space-y-2">
-            {/* Main vote button */}
-            <button
-              onClick={handleVote}
-              className={`flex items-center space-x-2 sm:space-x-3 transition-all duration-200 ${
-                userVote === 'up'
-                  ? 'text-indigo-600 bg-indigo-50 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl'
-                  : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl'
-              }`}
-            >
-              <ArrowUp className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="font-bold text-base sm:text-lg">{idea.upvotes}</span>
-            </button>
-            
-            {/* Trending indicator */}
-            {trendingInfo && (
-              <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${
-                trendingInfo.isHot 
-                  ? 'bg-orange-100 text-orange-700' 
-                  : 'bg-green-100 text-green-700'
-              }`}>
-                {trendingInfo.isHot ? (
-                  <Flame className="h-3 w-3" />
-                ) : (
-                  <TrendingUp className="h-3 w-3" />
-                )}
-                <span>+{trendingInfo.score}</span>
-              </div>
-            )}
-          </div>
+          <button
+            onClick={handleVote}
+            className={`flex items-center space-x-2 sm:space-x-3 transition-all duration-200 ${
+              userVote === 'up'
+                ? 'text-indigo-600 bg-indigo-50 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl'
+            }`}
+          >
+            <ArrowUp className="h-5 w-5 sm:h-6 sm:w-6" />
+            <span className="font-bold text-base sm:text-lg">{idea.upvotes}</span>
+          </button>
         </div>
 
         <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 line-clamp-2 leading-tight">
