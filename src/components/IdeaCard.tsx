@@ -59,56 +59,56 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
 
   return (
     <Link to={`/idea/${idea.id}`} className="block">
-      <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-6 h-full flex flex-col relative">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 h-full flex flex-col relative border border-gray-100 hover:border-gray-200">
         {/* Credibility indicator */}
         {credibilityBoost > 0 && (
-          <div className="absolute top-2 right-2 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium flex items-center">
+          <div className="absolute top-4 right-4 bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-medium flex items-center">
             <TrendingUp className="h-3 w-3 mr-1" />
             +{credibilityBoost}
           </div>
         )}
 
-        <div className="flex justify-between items-start mb-3">
-          <span className={`text-xs px-3 py-1 rounded-full font-medium ${getCategoryColor(idea.category)}`}>
+        <div className="flex justify-between items-start mb-6">
+          <span className={`text-sm px-4 py-2 rounded-full font-medium ${getCategoryColor(idea.category)}`}>
             {idea.category}
           </span>
           <button
             onClick={handleVote}
-            className={`flex items-center space-x-1 transition-colors ${
+            className={`flex items-center space-x-2 transition-all duration-200 ${
               userVote === 'up'
-                ? 'text-indigo-600 bg-indigo-50 px-2 py-1 rounded'
-                : 'text-gray-500 hover:text-indigo-600'
+                ? 'text-indigo-600 bg-indigo-50 px-3 py-2 rounded-lg'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-lg'
             }`}
           >
-            <ArrowUp className="h-4 w-4" />
-            <span className="font-medium">{idea.upvotes}</span>
+            <ArrowUp className="h-5 w-5" />
+            <span className="font-semibold text-base">{idea.upvotes}</span>
           </button>
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+        <h3 className="text-xl font-bold text-gray-800 mb-4 line-clamp-2 leading-tight">
           {idea.title}
         </h3>
 
-        <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
+        <p className="text-gray-600 text-base mb-6 flex-grow line-clamp-3 leading-relaxed">
           {idea.description}
         </p>
 
-        <div className="flex flex-wrap gap-1 mb-4">
+        <div className="flex flex-wrap gap-2 mb-6">
           {idea.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"
+              className="text-sm bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg"
             >
               #{tag}
             </span>
           ))}
           {idea.tags.length > 3 && (
-            <span className="text-xs text-gray-500">+{idea.tags.length - 3} more</span>
+            <span className="text-sm text-gray-500 px-3 py-1.5">+{idea.tags.length - 3} more</span>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+          <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-1">
               <Calendar className="h-4 w-4" />
               <span>{formatTimeAgo(idea.createdAt)}</span>
@@ -124,15 +124,17 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
         </div>
 
         {/* Author info */}
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+        <div className="pt-4 border-t border-gray-100">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
               {idea.author.name.charAt(0)}
             </div>
-            <span className="text-sm text-gray-600">{idea.author.name}</span>
-            {verificationStatus.isVerified && verificationStatus.badge && (
-              <span className="text-xs text-gray-500">• Verified</span>
-            )}
+            <div className="flex-1">
+              <span className="text-sm font-medium text-gray-700">{idea.author.name}</span>
+              {verificationStatus.isVerified && verificationStatus.badge && (
+                <span className="text-xs text-gray-500 ml-2">• Verified</span>
+              )}
+            </div>
           </div>
         </div>
       </div>

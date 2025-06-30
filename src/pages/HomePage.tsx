@@ -34,10 +34,10 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="container mx-auto px-4 pt-24 pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <main className="container mx-auto px-6 pt-28 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-10">
             {/* Pinned Ideas */}
             <PinnedIdeas ideas={ideas} />
 
@@ -45,78 +45,80 @@ const HomePage: React.FC = () => {
             {user && <RecommendationsSection />}
 
             {/* Section Header */}
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold text-gray-800">
                 {user ? 'All Ideas' : 'Discover Ideas'}
               </h2>
               {!user && (
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-base">
                   Sign in to get personalized recommendations
                 </p>
               )}
             </div>
 
             {/* Filters */}
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 space-y-4 lg:space-y-0">
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => setSortBy('top')}
-                    className={`px-4 py-2 rounded-md font-medium transition ${
-                      sortBy === 'top'
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    Top
-                  </button>
-                  <button
-                    onClick={() => setSortBy('latest')}
-                    className={`px-4 py-2 rounded-md font-medium transition ${
-                      sortBy === 'latest'
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    Latest
-                  </button>
-                  <button
-                    onClick={() => setSortBy('trending')}
-                    className={`px-4 py-2 rounded-md font-medium transition ${
-                      sortBy === 'trending'
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    Trending
-                  </button>
+            <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-6 lg:space-y-0">
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={() => setSortBy('top')}
+                      className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                        sortBy === 'top'
+                          ? 'bg-indigo-600 text-white shadow-md'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      }`}
+                    >
+                      Top
+                    </button>
+                    <button
+                      onClick={() => setSortBy('latest')}
+                      className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                        sortBy === 'latest'
+                          ? 'bg-indigo-600 text-white shadow-md'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      }`}
+                    >
+                      Latest
+                    </button>
+                    <button
+                      onClick={() => setSortBy('trending')}
+                      className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                        sortBy === 'trending'
+                          ? 'bg-indigo-600 text-white shadow-md'
+                          : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                      }`}
+                    >
+                      Trending
+                    </button>
+                  </div>
+
+                  <DateRangeFilter onDateRangeChange={handleDateRangeChange} />
                 </div>
 
-                <DateRangeFilter onDateRangeChange={handleDateRangeChange} />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <label htmlFor="category-filter" className="text-gray-700 font-medium">
-                  Filter by:
-                </label>
-                <select
-                  id="category-filter"
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value as Category | 'all')}
-                  className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category === 'all' ? 'All Categories' : category}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex items-center space-x-3">
+                  <label htmlFor="category-filter" className="text-gray-700 font-medium text-base">
+                    Filter by:
+                  </label>
+                  <select
+                    id="category-filter"
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value as Category | 'all')}
+                    className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white min-w-[160px]"
+                  >
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category === 'all' ? 'All Categories' : category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
 
             {/* Loading State */}
             {isLoading && (
-              <div className="flex justify-center py-12">
+              <div className="flex justify-center py-16">
                 <LoadingSpinner size="lg" text="Loading ideas..." />
               </div>
             )}
@@ -125,15 +127,15 @@ const HomePage: React.FC = () => {
             {!isLoading && (
               <>
                 {filteredIdeas.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {filteredIdeas.map((idea) => (
                       <IdeaCard key={idea.id} idea={idea} />
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12">
-                    <div className="text-gray-500 text-lg mb-4">No ideas found</div>
-                    <p className="text-gray-400">Try adjusting your filters or search terms</p>
+                  <div className="text-center py-16 bg-white rounded-xl shadow-sm">
+                    <div className="text-gray-500 text-xl mb-4">No ideas found</div>
+                    <p className="text-gray-400 text-base">Try adjusting your filters or search terms</p>
                   </div>
                 )}
 
@@ -146,7 +148,7 @@ const HomePage: React.FC = () => {
                         // Simulate loading more ideas
                         setTimeout(() => setIsLoading(false), 1000);
                       }}
-                      className="bg-white border border-gray-300 rounded-lg px-6 py-3 text-gray-700 hover:bg-gray-50 transition font-medium"
+                      className="bg-white border border-gray-300 rounded-xl px-8 py-4 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 font-medium text-base shadow-sm"
                     >
                       Load More Ideas
                     </button>
@@ -157,7 +159,7 @@ const HomePage: React.FC = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-8">
             {/* Suggested Users */}
             {user && <SuggestedUsers limit={4} />}
 
@@ -165,7 +167,7 @@ const HomePage: React.FC = () => {
             <ActivityFeed 
               showFollowingOnly={!!user}
               limit={8}
-              className="sticky top-24"
+              className="sticky top-28"
             />
           </div>
         </div>
