@@ -88,7 +88,7 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
         setSuggestedTip('');
 
         // Show immediate confirmation with demo info
-        alert(`🚀 Collaboration request sent!\n\n📱 Demo Mode: You'll receive notifications in 45 seconds showing:\n• Collaboration acceptance\n• Tip confirmation\n\nThis simulates the full collaboration flow for demonstration purposes.`);
+        alert(`🚀 Collaboration request sent!\n\nYou'll receive notifications if the idea creator accepts!`);
       } else {
         alert(result.message);
       }
