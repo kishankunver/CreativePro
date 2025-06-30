@@ -124,17 +124,7 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
           {/* Demo Notice */}
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-start space-x-2">
-              <div className="text-blue-600 text-lg">🎬</div>
-              <div>
-                <h4 className="font-medium text-blue-800 mb-1">Demo Mode Active</h4>
-                <p className="text-blue-700 text-sm">
-                  After submitting, you'll receive demo notifications in 45 seconds showing collaboration acceptance and tip confirmation.
-                </p>
-              </div>
-            </div>
-          </div>
+          
 
           {/* Message */}
           <div className="mb-6">
