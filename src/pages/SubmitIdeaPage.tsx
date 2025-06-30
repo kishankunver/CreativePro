@@ -478,7 +478,7 @@ const SubmitIdeaPage: React.FC = () => {
                   <p className="text-sm text-blue-700">
                     Our AI will analyze your idea, perform market research, validation, and generate a timestamped proof of originality certificate. 
                   </p>
-                                    <p className="text-sm text-blue-700">
+                  <p className="text-sm text-blue-700">
                                         This will provide verifiable evidence of when your idea was first submitted.
                   </p>
                 </div>
