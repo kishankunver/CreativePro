@@ -27,15 +27,46 @@ const Header: React.FC = () => {
   const canSubmitVerification = user ? verificationService.canSubmitVerificationRequest(user.id) : null;
   const unreadNotificationCount = user ? socialService.getUnreadNotificationCount(user.id) : 0;
 
+  // Custom lightbulb logo component
+  const LightbulbLogo = ({ className }: { className: string }) => (
+    <div className={`${className} bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center relative overflow-hidden`}>
+      {/* Background gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600 opacity-90"></div>
+      
+      {/* Lightbulb icon */}
+      <svg 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        className="relative z-10 text-white"
+        style={{ width: '60%', height: '60%' }}
+      >
+        {/* Bulb body */}
+        <path 
+          d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.5-1.5 4.5-3 5.5V17a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2.5C7.5 13.5 6 11.5 6 9a6 6 0 0 1 6-6z" 
+          fill="currentColor"
+        />
+        {/* Light rays */}
+        <path 
+          d="M12 1v2M4.22 4.22l1.42 1.42M1 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M23 12h-2M18.36 18.36l1.42 1.42" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round"
+          opacity="0.7"
+        />
+      </svg>
+      
+      {/* Subtle shine effect */}
+      <div className="absolute top-1 left-1 w-2 h-2 bg-white opacity-30 rounded-full"></div>
+    </div>
+  );
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-40 border-b border-gray-200">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 flex items-center justify-between max-w-6xl">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Plus className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 text-white" />
-            </div>
+            <LightbulbLogo className="w-10 h-10 sm:w-12 sm:h-12" />
             <span className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">CreativePro</span>
           </Link>
 
