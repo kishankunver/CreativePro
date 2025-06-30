@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowUp, ArrowDown, MessageCircle, Share2, Bookmark, Calendar, User, Flag, Send, Shield } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageCircle, Share2, Bookmark, Calendar, User, Flag, Send, Shield, Users, Lock } from 'lucide-react';
 import Header from '../components/Header';
 import FlagModal from '../components/FlagModal';
 import MessagingModal from '../components/MessagingModal';
 import ProofOfOriginality from '../components/ProofOfOriginality';
+import CollaborationRequestModal from '../components/CollaborationRequestModal';
+import CollaboratorBadge from '../components/CollaboratorBadge';
 import { useIdeas } from '../contexts/IdeaContext';
 import { useAuth } from '../contexts/AuthContext';
 import { incrementViewCount } from '../services/views';
+import { collaborationService } from '../services/collaboration';
 
 const IdeaDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +20,10 @@ const IdeaDetailsPage: React.FC = () => {
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [showProofOfOriginality, setShowProofOfOriginality] = useState(false);
+  const [showCollaborationModal, setShowCollaborationModal] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [ideaRelease, setIdeaRelease] = useState(null);
+  const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
   const idea = id ? getIdea(id) : null;
   const userVote = user && idea ? getUserVote(idea.id, user.id) : null;
@@ -34,6 +40,15 @@ const IdeaDetailsPage: React.FC = () => {
     // Record idea view for recommendations
     if (user) {
       recordIdeaView(user.id, idea.id);
+    }
+
+    // Check for idea release and pending collaboration requests
+    const release = collaborationService.getIdeaRelease(idea.id);
+    setIdeaRelease(release);
+
+    if (user) {
+      const pending = collaborationService.hasPendingCollaborationRequest(user.id, idea.id);
+      setHasPendingRequest(pending);
     }
   }, [idea, user, recordIdeaView]);
 
@@ -88,6 +103,11 @@ const IdeaDetailsPage: React.FC = () => {
     }
   };
 
+  const handleCollaborationSuccess = () => {
+    setHasPendingRequest(true);
+    alert('Collaboration request sent successfully!');
+  };
+
   const formatTimeAgo = (date: Date) => {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
@@ -97,6 +117,10 @@ const IdeaDetailsPage: React.FC = () => {
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
     return `${Math.floor(diffInSeconds / 86400)}d ago`;
   };
+
+  const isOwnIdea = user?.id === idea.authorId;
+  const isReleased = !!ideaRelease;
+  const canRequestCollaboration = user && !isOwnIdea && !isReleased && !hasPendingRequest;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -112,6 +136,14 @@ const IdeaDetailsPage: React.FC = () => {
                 <div className="flex items-start justify-between mb-4">
                   <h1 className="text-3xl font-bold text-gray-800 flex-1">{idea.title}</h1>
                   <div className="flex items-center space-x-2 ml-4">
+                    {/* Release Status Badge */}
+                    {isReleased && (
+                      <div className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                        <Lock className="h-4 w-4 mr-1" />
+                        Released
+                      </div>
+                    )}
+                    
                     {idea.author.isVerified && (
                       <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium flex items-center">
                         <svg className="h-3 w-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -177,6 +209,47 @@ const IdeaDetailsPage: React.FC = () => {
                     </span>
                   ))}
                 </div>
+
+                {/* Collaboration Section */}
+                {canRequestCollaboration && (
+                  <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-medium text-blue-800 mb-1">Interested in collaborating?</h3>
+                        <p className="text-sm text-blue-600">
+                          Work together with the idea creator to bring this concept to life
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setShowCollaborationModal(true)}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition flex items-center space-x-2"
+                      >
+                        <Users className="h-4 w-4" />
+                        <span>Request to Collaborate</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Pending Request Notice */}
+                {hasPendingRequest && (
+                  <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <Users className="h-5 w-5 text-yellow-600" />
+                      <span className="font-medium text-yellow-800">Collaboration request pending</span>
+                    </div>
+                    <p className="text-sm text-yellow-700 mt-1">
+                      Your collaboration request is being reviewed by the idea owner
+                    </p>
+                  </div>
+                )}
+
+                {/* Collaborator Badge */}
+                {ideaRelease && (
+                  <div className="mb-6">
+                    <CollaboratorBadge ideaId={idea.id} release={ideaRelease} />
+                  </div>
+                )}
 
                 {/* Actions */}
                 <div className="flex items-center space-x-6">
@@ -382,6 +455,15 @@ const IdeaDetailsPage: React.FC = () => {
         onClose={() => setShowMessageModal(false)}
         recipient={idea.author}
         ideaTitle={idea.title}
+      />
+
+      <CollaborationRequestModal
+        isOpen={showCollaborationModal}
+        onClose={() => setShowCollaborationModal(false)}
+        ideaId={idea.id}
+        ideaTitle={idea.title}
+        ideaOwnerId={idea.authorId}
+        onSuccess={handleCollaborationSuccess}
       />
     </div>
   );
