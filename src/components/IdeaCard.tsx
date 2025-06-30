@@ -63,7 +63,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
         {/* Credibility indicator */}
         {credibilityBoost > 0 && (
           <div className="absolute top-4 sm:top-6 right-4 sm:right-6 bg-green-100 text-green-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium flex items-center">
-            <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+            {/*<TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />*/}
             +{credibilityBoost}
           </div>
         )}
