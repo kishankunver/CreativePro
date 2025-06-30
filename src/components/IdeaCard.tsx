@@ -61,12 +61,12 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
     <Link to={`/idea/${idea.id}`} className="block">
       <div className="bg-white rounded-xl lg:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 sm:p-8 lg:p-10 h-full flex flex-col relative border border-gray-100 hover:border-gray-200">
         {/* Credibility indicator */}
-        {credibilityBoost > 0 && (
+        {/*{credibilityBoost > 0 && (
           <div className="absolute top-4 sm:top-6 right-4 sm:right-6 bg-green-100 text-green-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium flex items-center">
-            {/*<TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-            +{credibilityBoost}*/}
+            <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+            +{credibilityBoost}
           </div>
-        )}
+        )} */}
 
         <div className="flex justify-between items-start mb-6 sm:mb-8">
           <span className={`text-xs sm:text-sm px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full font-semibold ${getCategoryColor(idea.category)}`}>
