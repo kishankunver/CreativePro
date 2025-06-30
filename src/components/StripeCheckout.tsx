@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Heart, Loader } from 'lucide-react';
 import { stripeProducts } from '../stripe-config';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../services/supabase';
 
 interface StripeCheckoutProps {
   className?: string;
@@ -22,10 +23,17 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ className = '' }) => {
     setError(null);
 
     try {
+      // Get the current session token
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session?.access_token) {
+        throw new Error('No valid session found. Please log in again.');
+      }
+
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${session.access_token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

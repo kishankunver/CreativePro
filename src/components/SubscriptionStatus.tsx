@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Crown, Calendar, CreditCard, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../services/supabase';
 
 interface SubscriptionData {
   subscription_status: string;
@@ -18,11 +18,6 @@ const SubscriptionStatus: React.FC = () => {
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL,
-    import.meta.env.VITE_SUPABASE_ANON_KEY
-  );
 
   useEffect(() => {
     if (user) {
