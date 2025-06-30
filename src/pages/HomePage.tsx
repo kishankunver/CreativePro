@@ -52,7 +52,8 @@ const HomePage: React.FC = () => {
       </div>
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8 pb-12 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] xl:grid-cols-[4fr_1.5fr] gap-6 lg:gap-8">
+
           {/* Main Content */}
           <div className="lg:col-span-3 xl:col-span-4 space-y-8 lg:space-y-12">
             {/* Pinned Ideas */}
@@ -189,11 +190,11 @@ const HomePage: React.FC = () => {
 
             {/* Activity Feed */}
             <div className="lg:sticky lg:top-24 xl:top-32">
-              <ActivityFeed 
-                showFollowingOnly={!!user}
-                limit={6}
-              />
-            </div>
+  <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 lg:p-8">
+    <ActivityFeed showFollowingOnly={!!user} limit={6} />
+  </div>
+</div>
+
           </div>
         </div>
       </main>
