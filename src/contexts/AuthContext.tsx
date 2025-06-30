@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       const mockUser: User = {
         id: '1',
-        name: 'John Doe',
+        name: 'Alex Chen',
         email,
         bio: 'Passionate entrepreneur and innovator',
         karma: 1250,
