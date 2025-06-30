@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Users, DollarSign, Send, Loader } from 'lucide-react';
 import { collaborationService } from '../services/collaboration';
 import { useAuth } from '../contexts/AuthContext';
+import { demoNotificationService } from '../services/demoNotifications';
 
 interface CollaborationRequestModalProps {
   isOpen: boolean;
@@ -66,13 +67,28 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
         suggestedTipAmount: typeof suggestedTip === 'number' ? suggestedTip : undefined
       });
 
-      if (result.success) {
+      if (result.success && result.requestId) {
+        // Request notification permission for demo
+        await demoNotificationService.requestNotificationPermission();
+        
+        // Schedule demo notifications
+        demoNotificationService.scheduleCollaborationDemo(
+          result.requestId,
+          ideaTitle,
+          'Alex Chen', // Mock idea owner name
+          typeof suggestedTip === 'number' ? suggestedTip : 25
+        );
+
         onSuccess();
         onClose();
+        
         // Reset form
         setMessage('');
         setSelectedSkills([]);
         setSuggestedTip('');
+
+        // Show immediate confirmation with demo info
+        alert(`🚀 Collaboration request sent!\n\n📱 Demo Mode: You'll receive notifications in 45 seconds showing:\n• Collaboration acceptance\n• Tip confirmation\n\nThis simulates the full collaboration flow for demonstration purposes.`);
       } else {
         alert(result.message);
       }
@@ -107,6 +123,19 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+          {/* Demo Notice */}
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start space-x-2">
+              <div className="text-blue-600 text-lg">🎬</div>
+              <div>
+                <h4 className="font-medium text-blue-800 mb-1">Demo Mode Active</h4>
+                <p className="text-blue-700 text-sm">
+                  After submitting, you'll receive demo notifications in 45 seconds showing collaboration acceptance and tip confirmation.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Message */}
           <div className="mb-6">
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
@@ -182,6 +211,7 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
               <li>• If accepted, the idea will be "released" to you</li>
               <li>• You'll become a collaborator on the project</li>
               <li>• Optional tip will be processed upon acceptance</li>
+              <li>• <strong>Demo:</strong> Notifications will appear in 45 seconds</li>
             </ul>
           </div>
 

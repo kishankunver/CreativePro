@@ -7,6 +7,7 @@ import MessagingModal from '../components/MessagingModal';
 import ProofOfOriginality from '../components/ProofOfOriginality';
 import CollaborationRequestModal from '../components/CollaborationRequestModal';
 import CollaboratorBadge from '../components/CollaboratorBadge';
+import DemoNotificationBanner from '../components/DemoNotificationBanner';
 import { useIdeas } from '../contexts/IdeaContext';
 import { useAuth } from '../contexts/AuthContext';
 import { incrementViewCount } from '../services/views';
@@ -24,6 +25,7 @@ const IdeaDetailsPage: React.FC = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [ideaRelease, setIdeaRelease] = useState(null);
   const [hasPendingRequest, setHasPendingRequest] = useState(false);
+  const [activeRequestId, setActiveRequestId] = useState<string | null>(null);
 
   const idea = id ? getIdea(id) : null;
   const userVote = user && idea ? getUserVote(idea.id, user.id) : null;
@@ -49,6 +51,15 @@ const IdeaDetailsPage: React.FC = () => {
     if (user) {
       const pending = collaborationService.hasPendingCollaborationRequest(user.id, idea.id);
       setHasPendingRequest(pending);
+      
+      // Get the active request ID for demo notifications
+      if (pending) {
+        const requests = collaborationService.getCollaborationRequestsForIdea(idea.id);
+        const userRequest = requests.find(req => req.fromUserId === user.id && req.status === 'pending');
+        if (userRequest) {
+          setActiveRequestId(userRequest.id);
+        }
+      }
     }
   }, [idea, user, recordIdeaView]);
 
@@ -105,7 +116,7 @@ const IdeaDetailsPage: React.FC = () => {
 
   const handleCollaborationSuccess = () => {
     setHasPendingRequest(true);
-    alert('Collaboration request sent successfully!');
+    // The request ID will be set by the modal's success callback
   };
 
   const formatTimeAgo = (date: Date) => {
@@ -127,6 +138,13 @@ const IdeaDetailsPage: React.FC = () => {
       <Header />
       
       <main className="container mx-auto py-8 px-4 pt-24">
+        {/* Demo Notification Banner */}
+        {activeRequestId && (
+          <div className="mb-6">
+            <DemoNotificationBanner requestId={activeRequestId} />
+          </div>
+        )}
+
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="lg:w-3/4 space-y-6">
