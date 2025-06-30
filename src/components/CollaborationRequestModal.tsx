@@ -201,7 +201,6 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
               <li>• If accepted, the idea will be "released" to you</li>
               <li>• You'll become a collaborator on the project</li>
               <li>• Optional tip will be processed upon acceptance</li>
-              <li>• <strong>Demo:</strong> Notifications will appear in 45 seconds</li>
             </ul>
           </div>
 
