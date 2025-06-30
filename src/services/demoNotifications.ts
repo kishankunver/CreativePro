@@ -24,7 +24,7 @@ class DemoNotificationService {
         type: 'collaboration_accepted',
         title: '🎉 Collaboration Accepted!',
         message: `${ideaOwnerName} accepted your collaboration request for "${ideaTitle}"`,
-        delay: 45, // 45 seconds
+        delay: 5, // 45 seconds
         executed: false
       },
       {
@@ -32,7 +32,7 @@ class DemoNotificationService {
         type: 'tip_received',
         title: '💝 Tip Received!',
         message: `${ideaOwnerName} accepted your $${tipAmount} tip for the collaboration!`,
-        delay: 50, // 5 seconds after acceptance
+        delay: 10, // 5 seconds after acceptance
         executed: false
       }
     ];
