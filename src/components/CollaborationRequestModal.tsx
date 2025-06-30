@@ -75,7 +75,7 @@ const CollaborationRequestModal: React.FC<CollaborationRequestModalProps> = ({
         demoNotificationService.scheduleCollaborationDemo(
           result.requestId,
           ideaTitle,
-          'Alex Chen', // Mock idea owner name
+          'Emma Green', // Mock idea owner name
           typeof suggestedTip === 'number' ? suggestedTip : 25
         );
 
