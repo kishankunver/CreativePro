@@ -43,22 +43,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Check if user already exists in localStorage
-      const existingUsers = JSON.parse(localStorage.getItem('creativepro_all_users') || '[]');
-      const existingUser = existingUsers.find((u: User) => u.email === email);
+      const mockUser: User = {
+        id: '1',
+        name: 'Alex Chen',
+        email,
+        bio: 'Passionate entrepreneur and innovator',
+        karma: 1250,
+        ideas: [],
+        followers: 342,
+        following: 128,
+        joinedAt: new Date('2023-01-15'),
+        verificationStatus: 'unverified'
+      };
       
-      if (existingUser) {
-        // Convert joinedAt string back to Date object
-        if (existingUser.joinedAt) {
-          existingUser.joinedAt = new Date(existingUser.joinedAt);
-        }
-        setUser(existingUser);
-        localStorage.setItem('creativepro_user', JSON.stringify(existingUser));
-      } else {
-        throw new Error('User not found. Please sign up first.');
-      }
+      setUser(mockUser);
+      localStorage.setItem('creativepro_user', JSON.stringify(mockUser));
     } catch (error) {
-      throw error;
+      throw new Error('Login failed');
     } finally {
       setIsLoading(false);
     }
@@ -70,20 +71,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Check if user already exists
-      const existingUsers = JSON.parse(localStorage.getItem('creativepro_all_users') || '[]');
-      const userExists = existingUsers.find((u: User) => u.email === email);
-      
-      if (userExists) {
-        throw new Error('User with this email already exists. Please log in instead.');
-      }
-      
-      // Create new user with unique ID
-      const newUser: User = {
-        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      const mockUser: User = {
+        id: Date.now().toString(),
         name,
         email,
-        bio: `Hello! I'm ${name}, excited to share and discover innovative ideas on CreativePro.`,
         karma: 0,
         ideas: [],
         followers: 0,
@@ -92,15 +83,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         verificationStatus: 'unverified'
       };
       
-      // Save to all users list
-      const updatedUsers = [...existingUsers, newUser];
-      localStorage.setItem('creativepro_all_users', JSON.stringify(updatedUsers));
-      
-      // Set as current user
-      setUser(newUser);
-      localStorage.setItem('creativepro_user', JSON.stringify(newUser));
+      setUser(mockUser);
+      localStorage.setItem('creativepro_user', JSON.stringify(mockUser));
     } catch (error) {
-      throw error;
+      throw new Error('Signup failed');
     } finally {
       setIsLoading(false);
     }

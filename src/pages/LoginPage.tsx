@@ -10,27 +10,22 @@ const LoginPage: React.FC = () => {
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const { login, signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
 
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
       } else {
-        if (!formData.name.trim()) {
-          throw new Error('Please enter your full name');
-        }
         await signup(formData.name, formData.email, formData.password);
       }
       navigate('/');
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      alert(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -39,6 +34,10 @@ const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md overflow-hidden">
+        <div className="absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold">
+          DEMO ONLY
+        </div>
+
         {/* Header */}
         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 text-center">
           <div className="flex justify-center mb-4">
@@ -60,10 +59,7 @@ const LoginPage: React.FC = () => {
           {/* Tabs */}
           <div className="flex border-b border-gray-200 mb-6">
             <button
-              onClick={() => {
-                setIsLogin(true);
-                setError('');
-              }}
+              onClick={() => setIsLogin(true)}
               className={`px-4 py-2 font-medium text-sm border-b-2 transition ${
                 isLogin
                   ? 'border-indigo-600 text-indigo-600'
@@ -73,10 +69,7 @@ const LoginPage: React.FC = () => {
               Log In
             </button>
             <button
-              onClick={() => {
-                setIsLogin(false);
-                setError('');
-              }}
+              onClick={() => setIsLogin(false)}
               className={`px-4 py-2 font-medium text-sm border-b-2 transition ${
                 !isLogin
                   ? 'border-indigo-600 text-indigo-600'
@@ -87,19 +80,12 @@ const LoginPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          )}
-
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name *
+                  Full Name
                 </label>
                 <input
                   type="text"
@@ -107,7 +93,7 @@ const LoginPage: React.FC = () => {
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Enter your full name"
+                  placeholder="Alex Chen"
                   required={!isLogin}
                 />
               </div>
@@ -115,7 +101,7 @@ const LoginPage: React.FC = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email *
+                Email
               </label>
               <input
                 type="email"
@@ -130,7 +116,7 @@ const LoginPage: React.FC = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password *
+                Password
               </label>
               <input
                 type="password"
@@ -170,17 +156,9 @@ const LoginPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Instructions */}
+          {/* Demo Notice */}
           <div className="mt-6 text-center text-xs text-gray-500">
-            {isLogin ? (
-              <p>
-                Don't have an account? Click "Sign Up" above to create one with your own name and email.
-              </p>
-            ) : (
-              <p>
-                Create your account with your real name and email to get started with CreativePro.
-              </p>
-            )}
+            This is a demo. Use any email and password to {isLogin ? 'login' : 'sign up'}.
           </div>
 
           {/* Back to Home */}
