@@ -410,11 +410,6 @@ export const IdeaProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const recordIdeaView = (userId: string, ideaId: string) => {
-    // Update view count
-    setIdeas(prev => prev.map(idea => 
-      idea.id === ideaId ? { ...idea, viewCount: (idea.viewCount || 0) + 1 } : idea
-    ));
-
     // Update recommendation service with user interaction
     recommendationService.updateUserInterests(userId, ideaId, 'view', ideas);
   };

@@ -7,6 +7,7 @@ import MessagingModal from '../components/MessagingModal';
 import ProofOfOriginality from '../components/ProofOfOriginality';
 import { useIdeas } from '../contexts/IdeaContext';
 import { useAuth } from '../contexts/AuthContext';
+import { incrementViewCount } from '../services/views';
 
 const IdeaDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,8 +23,16 @@ const IdeaDetailsPage: React.FC = () => {
   const userVote = user && idea ? getUserVote(idea.id, user.id) : null;
 
   useEffect(() => {
-    // Record idea view for "view one, add one" rule
-    if (idea && user) {
+    if (!idea?.id) return;
+
+    const key = `hasViewed-${idea.id}`;
+    if (!localStorage.getItem(key)) {
+      incrementViewCount(idea.id);
+      localStorage.setItem(key, 'true');
+    }
+
+    // Record idea view for recommendations
+    if (user) {
       recordIdeaView(user.id, idea.id);
     }
   }, [idea, user, recordIdeaView]);
