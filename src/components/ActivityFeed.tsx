@@ -56,19 +56,19 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
   const getActivityIcon = (type: ActivityFeedItem['type']) => {
     switch (type) {
       case 'idea_posted':
-        return <Lightbulb className="h-5 w-5 text-yellow-500" />;
+        return <Lightbulb className="h-6 w-6 text-yellow-500" />;
       case 'idea_upvoted':
-        return <TrendingUp className="h-5 w-5 text-green-500" />;
+        return <TrendingUp className="h-6 w-6 text-green-500" />;
       case 'comment_posted':
-        return <MessageCircle className="h-5 w-5 text-blue-500" />;
+        return <MessageCircle className="h-6 w-6 text-blue-500" />;
       case 'user_followed':
-        return <User className="h-5 w-5 text-purple-500" />;
+        return <User className="h-6 w-6 text-purple-500" />;
       case 'idea_bookmarked':
-        return <Heart className="h-5 w-5 text-red-500" />;
+        return <Heart className="h-6 w-6 text-red-500" />;
       case 'achievement_earned':
-        return <Trophy className="h-5 w-5 text-orange-500" />;
+        return <Trophy className="h-6 w-6 text-orange-500" />;
       default:
-        return <Clock className="h-5 w-5 text-gray-500" />;
+        return <Clock className="h-6 w-6 text-gray-500" />;
     }
   };
 
@@ -77,7 +77,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
       case 'idea_posted':
         return (
           <span>
-            posted a new idea: <Link to={`/idea/${activity.targetId}`} className="font-medium text-indigo-600 hover:text-indigo-800">
+            posted a new idea: <Link to={`/idea/${activity.targetId}`} className="font-semibold text-indigo-600 hover:text-indigo-800">
               {activity.targetData?.title}
             </Link>
           </span>
@@ -85,7 +85,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
       case 'idea_upvoted':
         return (
           <span>
-            upvoted <Link to={`/idea/${activity.targetId}`} className="font-medium text-indigo-600 hover:text-indigo-800">
+            upvoted <Link to={`/idea/${activity.targetId}`} className="font-semibold text-indigo-600 hover:text-indigo-800">
               {activity.targetData?.title}
             </Link>
           </span>
@@ -93,7 +93,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
       case 'comment_posted':
         return (
           <span>
-            commented on <Link to={`/idea/${activity.targetId}`} className="font-medium text-indigo-600 hover:text-indigo-800">
+            commented on <Link to={`/idea/${activity.targetId}`} className="font-semibold text-indigo-600 hover:text-indigo-800">
               {activity.targetData?.title}
             </Link>
           </span>
@@ -101,7 +101,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
       case 'user_followed':
         return (
           <span>
-            started following <Link to={`/profile/${activity.targetId}`} className="font-medium text-indigo-600 hover:text-indigo-800">
+            started following <Link to={`/profile/${activity.targetId}`} className="font-semibold text-indigo-600 hover:text-indigo-800">
               {activity.targetData?.name}
             </Link>
           </span>
@@ -109,7 +109,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
       case 'idea_bookmarked':
         return (
           <span>
-            bookmarked <Link to={`/idea/${activity.targetId}`} className="font-medium text-indigo-600 hover:text-indigo-800">
+            bookmarked <Link to={`/idea/${activity.targetId}`} className="font-semibold text-indigo-600 hover:text-indigo-800">
               {activity.targetData?.title}
             </Link>
           </span>
@@ -117,7 +117,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
       case 'achievement_earned':
         return (
           <span>
-            earned the <span className="font-medium text-orange-600">
+            earned the <span className="font-semibold text-orange-600">
               {activity.targetData?.achievement}
             </span> achievement
           </span>
@@ -144,14 +144,14 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
 
   if (isLoading) {
     return (
-      <div className={`bg-white rounded-xl shadow-sm p-8 ${className}`}>
-        <div className="animate-pulse space-y-6">
+      <div className={`bg-white rounded-2xl shadow-sm p-10 ${className}`}>
+        <div className="animate-pulse space-y-8">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="flex space-x-4">
-              <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
-              <div className="flex-1 space-y-3">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            <div key={i} className="flex space-x-5">
+              <div className="w-14 h-14 bg-gray-200 rounded-full"></div>
+              <div className="flex-1 space-y-4">
+                <div className="h-5 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
               </div>
             </div>
           ))}
@@ -161,16 +161,16 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
   }
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm overflow-hidden ${className}`}>
+    <div className={`bg-white rounded-2xl shadow-sm overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="px-8 py-6 border-b border-gray-200">
+      <div className="px-10 py-8 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-gray-800">
+          <h3 className="text-2xl font-bold text-gray-800">
             {showFollowingOnly ? 'Following Activity' : 'Recent Activity'}
           </h3>
           
           {/* Filter Tabs */}
-          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+          <div className="flex space-x-2 bg-gray-100 rounded-xl p-2">
             {[
               { key: 'all', label: 'All' },
               { key: 'ideas', label: 'Ideas' },
@@ -180,7 +180,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
               <button
                 key={tab.key}
                 onClick={() => setFilter(tab.key as any)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                className={`px-4 py-2 text-sm font-semibold rounded-lg transition-colors ${
                   filter === tab.key
                     ? 'bg-white text-indigo-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-800'
@@ -200,50 +200,50 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
             const verificationStatus = verificationService.getVerificationStatus(activity.userId);
             
             return (
-              <div key={activity.id} className="p-8 hover:bg-gray-50 transition-colors">
-                <div className="flex space-x-4">
+              <div key={activity.id} className="p-10 hover:bg-gray-50 transition-colors">
+                <div className="flex space-x-5">
                   {/* User Avatar */}
                   <Link to={`/profile/${activity.userId}`} className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
                       {activity.user.name?.charAt(0) || 'U'}
                     </div>
                   </Link>
 
                   <div className="flex-1 min-w-0">
                     {/* Activity Header */}
-                    <div className="flex items-center space-x-3 mb-2">
+                    <div className="flex items-center space-x-4 mb-3">
                       {getActivityIcon(activity.type)}
                       <Link 
                         to={`/profile/${activity.userId}`}
-                        className="font-semibold text-gray-800 hover:text-indigo-600"
+                        className="font-bold text-gray-800 hover:text-indigo-600 text-lg"
                       >
                         {activity.user.name || 'Unknown User'}
                       </Link>
                       {verificationStatus.isVerified && verificationStatus.badge && (
                         <VerificationBadge badge={verificationStatus.badge} size="sm" />
                       )}
-                      <span className="text-gray-600">
+                      <span className="text-gray-600 text-lg">
                         {getActivityText(activity)}
                       </span>
                     </div>
 
                     {/* Activity Content */}
                     {activity.content && (
-                      <div className="mt-3 text-gray-700 bg-gray-50 rounded-lg p-4 text-sm">
+                      <div className="mt-4 text-gray-700 bg-gray-50 rounded-xl p-5 text-base">
                         "{activity.content}"
                       </div>
                     )}
 
                     {/* Achievement Details */}
                     {activity.type === 'achievement_earned' && activity.targetData && (
-                      <div className="mt-3 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-4">
-                        <div className="flex items-center space-x-3">
-                          <Trophy className="h-6 w-6 text-orange-500" />
+                      <div className="mt-4 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-5">
+                        <div className="flex items-center space-x-4">
+                          <Trophy className="h-7 w-7 text-orange-500" />
                           <div>
-                            <div className="font-semibold text-orange-800">
+                            <div className="font-bold text-orange-800 text-lg">
                               {activity.targetData.achievement}
                             </div>
-                            <div className="text-sm text-orange-600">
+                            <div className="text-base text-orange-600">
                               {activity.targetData.description}
                             </div>
                           </div>
@@ -252,33 +252,33 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
                     )}
 
                     {/* Activity Footer */}
-                    <div className="flex items-center justify-between mt-4">
-                      <div className="flex items-center space-x-6 text-sm text-gray-500">
+                    <div className="flex items-center justify-between mt-5">
+                      <div className="flex items-center space-x-8 text-base text-gray-500">
                         <span>{formatTimeAgo(activity.createdAt)}</span>
                         
                         {/* Engagement Actions */}
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-6">
                           <button
                             onClick={() => handleEngagement(activity.id, 'like')}
-                            className="flex items-center space-x-1 hover:text-red-500 transition-colors"
+                            className="flex items-center space-x-2 hover:text-red-500 transition-colors"
                           >
-                            <Heart className="h-4 w-4" />
+                            <Heart className="h-5 w-5" />
                             <span>{activity.engagement?.likes || 0}</span>
                           </button>
                           
                           <button
                             onClick={() => handleEngagement(activity.id, 'comment')}
-                            className="flex items-center space-x-1 hover:text-blue-500 transition-colors"
+                            className="flex items-center space-x-2 hover:text-blue-500 transition-colors"
                           >
-                            <MessageCircle className="h-4 w-4" />
+                            <MessageCircle className="h-5 w-5" />
                             <span>{activity.engagement?.comments || 0}</span>
                           </button>
                           
                           <button
                             onClick={() => handleEngagement(activity.id, 'share')}
-                            className="flex items-center space-x-1 hover:text-green-500 transition-colors"
+                            className="flex items-center space-x-2 hover:text-green-500 transition-colors"
                           >
-                            <Share2 className="h-4 w-4" />
+                            <Share2 className="h-5 w-5" />
                             <span>{activity.engagement?.shares || 0}</span>
                           </button>
                         </div>
@@ -290,10 +290,10 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
             );
           })
         ) : (
-          <div className="p-12 text-center text-gray-500">
-            <Clock className="h-16 w-16 mx-auto mb-6 text-gray-300" />
-            <h4 className="font-semibold text-gray-800 mb-3 text-lg">No activity yet</h4>
-            <p className="text-base">
+          <div className="p-16 text-center text-gray-500">
+            <Clock className="h-20 w-20 mx-auto mb-8 text-gray-300" />
+            <h4 className="font-bold text-gray-800 mb-4 text-xl">No activity yet</h4>
+            <p className="text-lg">
               {showFollowingOnly 
                 ? "Follow some users to see their activity here"
                 : "Activity will appear here as users interact with ideas"
@@ -305,10 +305,10 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
 
       {/* Load More */}
       {activities.length >= limit && (
-        <div className="px-8 py-6 border-t border-gray-200">
+        <div className="px-10 py-8 border-t border-gray-200">
           <button
             onClick={loadActivityFeed}
-            className="w-full text-center text-indigo-600 hover:text-indigo-800 font-medium"
+            className="w-full text-center text-indigo-600 hover:text-indigo-800 font-semibold text-lg"
           >
             Load More Activity
           </button>

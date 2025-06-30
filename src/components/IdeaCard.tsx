@@ -59,80 +59,80 @@ const IdeaCard: React.FC<IdeaCardProps> = ({ idea }) => {
 
   return (
     <Link to={`/idea/${idea.id}`} className="block">
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 h-full flex flex-col relative border border-gray-100 hover:border-gray-200">
+      <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-10 h-full flex flex-col relative border border-gray-100 hover:border-gray-200">
         {/* Credibility indicator */}
         {credibilityBoost > 0 && (
-          <div className="absolute top-4 right-4 bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-medium flex items-center">
-            <TrendingUp className="h-3 w-3 mr-1" />
+          <div className="absolute top-6 right-6 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium flex items-center">
+            <TrendingUp className="h-4 w-4 mr-2" />
             +{credibilityBoost}
           </div>
         )}
 
-        <div className="flex justify-between items-start mb-6">
-          <span className={`text-sm px-4 py-2 rounded-full font-medium ${getCategoryColor(idea.category)}`}>
+        <div className="flex justify-between items-start mb-8">
+          <span className={`text-sm px-5 py-2.5 rounded-full font-semibold ${getCategoryColor(idea.category)}`}>
             {idea.category}
           </span>
           <button
             onClick={handleVote}
-            className={`flex items-center space-x-2 transition-all duration-200 ${
+            className={`flex items-center space-x-3 transition-all duration-200 ${
               userVote === 'up'
-                ? 'text-indigo-600 bg-indigo-50 px-3 py-2 rounded-lg'
-                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-lg'
+                ? 'text-indigo-600 bg-indigo-50 px-4 py-3 rounded-xl'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 px-4 py-3 rounded-xl'
             }`}
           >
-            <ArrowUp className="h-5 w-5" />
-            <span className="font-semibold text-base">{idea.upvotes}</span>
+            <ArrowUp className="h-6 w-6" />
+            <span className="font-bold text-lg">{idea.upvotes}</span>
           </button>
         </div>
 
-        <h3 className="text-xl font-bold text-gray-800 mb-4 line-clamp-2 leading-tight">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6 line-clamp-2 leading-tight">
           {idea.title}
         </h3>
 
-        <p className="text-gray-600 text-base mb-6 flex-grow line-clamp-3 leading-relaxed">
+        <p className="text-gray-600 text-lg mb-8 flex-grow line-clamp-3 leading-relaxed">
           {idea.description}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-3 mb-8">
           {idea.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="text-sm bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg"
+              className="text-sm bg-gray-100 text-gray-600 px-4 py-2 rounded-lg font-medium"
             >
               #{tag}
             </span>
           ))}
           {idea.tags.length > 3 && (
-            <span className="text-sm text-gray-500 px-3 py-1.5">+{idea.tags.length - 3} more</span>
+            <span className="text-sm text-gray-500 px-4 py-2">+{idea.tags.length - 3} more</span>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-1">
-              <Calendar className="h-4 w-4" />
-              <span>{formatTimeAgo(idea.createdAt)}</span>
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <Calendar className="h-5 w-5" />
+              <span className="text-base">{formatTimeAgo(idea.createdAt)}</span>
             </div>
             {verificationStatus.isVerified && verificationStatus.badge && (
               <VerificationBadge badge={verificationStatus.badge} size="sm" />
             )}
           </div>
-          <div className="flex items-center space-x-1">
-            <MessageCircle className="h-4 w-4" />
-            <span>{idea.comments.length} comments</span>
+          <div className="flex items-center space-x-2">
+            <MessageCircle className="h-5 w-5" />
+            <span className="text-base">{idea.comments.length} comments</span>
           </div>
         </div>
 
         {/* Author info */}
-        <div className="pt-4 border-t border-gray-100">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+        <div className="pt-6 border-t border-gray-100">
+          <div className="flex items-center space-x-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
               {idea.author.name.charAt(0)}
             </div>
             <div className="flex-1">
-              <span className="text-sm font-medium text-gray-700">{idea.author.name}</span>
+              <span className="text-base font-semibold text-gray-700">{idea.author.name}</span>
               {verificationStatus.isVerified && verificationStatus.badge && (
-                <span className="text-xs text-gray-500 ml-2">• Verified</span>
+                <span className="text-sm text-gray-500 ml-3">• Verified</span>
               )}
             </div>
           </div>

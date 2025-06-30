@@ -28,36 +28,36 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-40 border-b border-gray-200">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-8 py-5 flex items-center justify-between max-w-7xl">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Plus className="h-6 w-6 text-white" />
+          <Link to="/" className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <Plus className="h-7 w-7 text-white" />
             </div>
             <span className="text-2xl font-bold text-gray-800">CreativePro</span>
           </Link>
 
           {/* Search Bar */}
-          <div className="hidden md:block flex-grow max-w-lg mx-8">
+          <div className="hidden lg:block flex-grow max-w-2xl mx-12">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search ideas..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-3 pl-12 pr-6 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
+                className="w-full py-4 pl-14 pr-8 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200 text-lg"
               />
-              <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-5 top-4.5 h-6 w-6 text-gray-400" />
             </div>
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             {user ? (
               <>
                 <Link
                   to="/submit"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200 flex items-center space-x-2 shadow-sm"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-8 rounded-xl transition duration-200 flex items-center space-x-3 shadow-sm"
                 >
                   <Plus className="h-5 w-5" />
                   <span className="hidden sm:inline">Submit Idea</span>
@@ -67,7 +67,7 @@ const Header: React.FC = () => {
                 <div className="relative">
                   <button
                     onClick={() => setShowNotifications(!showNotifications)}
-                    className="relative p-3 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition-colors"
+                    className="relative p-4 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition-colors"
                   >
                     <Bell className="h-6 w-6" />
                     {unreadNotificationCount > 0 && (
@@ -79,8 +79,8 @@ const Header: React.FC = () => {
                 </div>
                 
                 <div className="relative group">
-                  <button className="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-100 transition-colors">
-                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <button className="flex items-center space-x-4 p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
                       {user.name.charAt(0)}
                     </div>
                     {verificationStatus?.isVerified && verificationStatus.badge && (
@@ -88,39 +88,39 @@ const Header: React.FC = () => {
                     )}
                   </button>
                   
-                  <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-200">
-                    <div className="px-6 py-4 border-b border-gray-100">
-                      <div className="flex items-center space-x-3">
-                        <div className="font-semibold text-gray-800">{user.name}</div>
+                  <div className="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-lg py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-200">
+                    <div className="px-8 py-5 border-b border-gray-100">
+                      <div className="flex items-center space-x-4">
+                        <div className="font-semibold text-gray-800 text-lg">{user.name}</div>
                         {verificationStatus?.isVerified && verificationStatus.badge && (
                           <VerificationBadge badge={verificationStatus.badge} size="sm" />
                         )}
                       </div>
-                      <div className="text-sm text-gray-500 mt-1">{user.email}</div>
+                      <div className="text-sm text-gray-500 mt-2">{user.email}</div>
                     </div>
                     
                     <Link
                       to={`/profile/${user.id}`}
-                      className="flex items-center px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center px-8 py-4 text-base text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      <User className="h-5 w-5 mr-3" />
+                      <User className="h-5 w-5 mr-4" />
                       Profile
                     </Link>
                     
                     {!verificationStatus?.isVerified && canSubmitVerification?.canSubmit && (
                       <button
                         onClick={() => setShowVerificationModal(true)}
-                        className="flex items-center w-full px-6 py-3 text-sm text-blue-600 hover:bg-blue-50 transition-colors"
+                        className="flex items-center w-full px-8 py-4 text-base text-blue-600 hover:bg-blue-50 transition-colors"
                       >
-                        <Shield className="h-5 w-5 mr-3" />
+                        <Shield className="h-5 w-5 mr-4" />
                         Get Verified
                       </button>
                     )}
                     
                     {verificationStatus?.pendingRequest && (
-                      <div className="px-6 py-3 text-sm text-orange-600 bg-orange-50">
+                      <div className="px-8 py-4 text-base text-orange-600 bg-orange-50">
                         <div className="flex items-center">
-                          <Shield className="h-5 w-5 mr-3" />
+                          <Shield className="h-5 w-5 mr-4" />
                           Verification Pending
                         </div>
                       </div>
@@ -128,9 +128,9 @@ const Header: React.FC = () => {
                     
                     <button
                       onClick={handleLogout}
-                      className="flex items-center w-full px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center w-full px-8 py-4 text-base text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      <LogOut className="h-5 w-5 mr-3" />
+                      <LogOut className="h-5 w-5 mr-4" />
                       Logout
                     </button>
                   </div>
@@ -139,7 +139,7 @@ const Header: React.FC = () => {
             ) : (
               <Link
                 to="/login"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-8 rounded-xl transition duration-200"
               >
                 Sign In
               </Link>
