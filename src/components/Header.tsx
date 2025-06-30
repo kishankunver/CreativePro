@@ -149,10 +149,40 @@ const Header: React.FC = () => {
                 Sign In
               </Link>
             )}
+
+            {/* Bolt Badge */}
+            <a
+              href="https://bolt.new/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 hover:scale-105 transition-transform duration-200"
+              title="Made with Bolt"
+            >
+              <img
+                src="/black_circle_360x360.png"
+                alt="Made with Bolt"
+                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200"
+              />
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="sm:hidden">
+          <div className="sm:hidden flex items-center space-x-2">
+            {/* Mobile Bolt Badge */}
+            <a
+              href="https://bolt.new/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 hover:scale-105 transition-transform duration-200"
+              title="Made with Bolt"
+            >
+              <img
+                src="/black_circle_360x360.png"
+                alt="Made with Bolt"
+                className="w-8 h-8 rounded-full shadow-sm"
+              />
+            </a>
+            
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
               className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
