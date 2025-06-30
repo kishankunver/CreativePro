@@ -14,7 +14,6 @@ export interface CollaborationResponse {
   requestId: string;
   accepted: boolean;
   responseMessage?: string;
-  tipAmount?: number;
 }
 
 class CollaborationService {
@@ -68,7 +67,7 @@ class CollaborationService {
       // Create notification for idea owner
       socialService.createNotification(data.toUserId, {
         type: 'collaboration_request',
-        title: 'New Collaboration Request',
+        title: '🤝 New Collaboration Request',
         message: 'wants to collaborate on your idea',
         actionUrl: `/idea/${data.ideaId}`,
         fromUserId: data.fromUserId,
@@ -103,7 +102,7 @@ class CollaborationService {
     }
   }
 
-  // Respond to collaboration request
+  // Respond to collaboration request (NO IMMEDIATE TIPPING)
   async respondToCollaborationRequest(response: CollaborationResponse): Promise<{
     success: boolean;
     message: string;
@@ -123,7 +122,7 @@ class CollaborationService {
       let releaseId: string | undefined;
 
       if (response.accepted) {
-        // Create idea release
+        // Create idea release (WITHOUT TIP)
         releaseId = `release_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         
         const release: IdeaRelease = {
@@ -133,8 +132,8 @@ class CollaborationService {
           releasedToUserId: request.fromUserId,
           collaborationRequestId: request.id,
           releasedAt: new Date(),
-          tipAmount: response.tipAmount,
           releaseNotes: response.responseMessage
+          // NO tipAmount here - will be added later when collaborator chooses to tip
         };
 
         this.ideaReleases.set(releaseId, release);
@@ -142,7 +141,7 @@ class CollaborationService {
         // Create notifications for both users
         socialService.createNotification(request.fromUserId, {
           type: 'collaboration_accepted',
-          title: 'Collaboration Accepted!',
+          title: '🎉 Collaboration Accepted!',
           message: 'accepted your collaboration request',
           actionUrl: `/idea/${request.ideaId}`,
           fromUserId: request.toUserId,
@@ -188,7 +187,7 @@ class CollaborationService {
       return {
         success: true,
         message: response.accepted 
-          ? 'Collaboration request accepted! The idea has been released.'
+          ? '🎉 Collaboration request accepted! The idea has been released.'
           : 'Collaboration request declined.',
         releaseId
       };
@@ -197,6 +196,53 @@ class CollaborationService {
       return {
         success: false,
         message: 'Failed to respond to collaboration request. Please try again.'
+      };
+    }
+  }
+
+  // Process tip payment AFTER collaboration is established
+  async processTipPayment(releaseId: string, tipAmount: number): Promise<{
+    success: boolean;
+    transactionId?: string;
+    message: string;
+  }> {
+    try {
+      // In production, this would integrate with Stripe
+      console.log('🎯 Processing Stripe tip payment:', { releaseId, tipAmount });
+      
+      // Simulate Stripe checkout process
+      const stripeCheckoutUrl = `https://checkout.stripe.com/pay/cs_test_${Date.now()}`;
+      
+      // Mock payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const transactionId = `tip_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      const release = this.ideaReleases.get(releaseId);
+      if (release) {
+        release.tipAmount = tipAmount;
+        release.tipTransactionId = transactionId;
+        
+        // Create notification for tip recipient
+        socialService.createNotification(release.originalOwnerId, {
+          type: 'tip_received',
+          title: '💝 Tip Received!',
+          message: `received a $${tipAmount} tip for collaborating`,
+          fromUserId: release.releasedToUserId,
+          metadata: { tipAmount, transactionId, releaseId }
+        });
+      }
+
+      return {
+        success: true,
+        transactionId,
+        message: `Successfully sent $${tipAmount} tip via Stripe!`
+      };
+    } catch (error) {
+      console.error('Failed to process tip payment:', error);
+      return {
+        success: false,
+        message: 'Failed to process tip payment. Please try again.'
       };
     }
   }
@@ -278,47 +324,6 @@ class CollaborationService {
       ideasReleased,
       ideasReceived
     };
-  }
-
-  // Process tip payment (mock implementation)
-  async processTipPayment(releaseId: string, tipAmount: number, paymentMethodId: string): Promise<{
-    success: boolean;
-    transactionId?: string;
-    message: string;
-  }> {
-    try {
-      // Mock payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const transactionId = `tip_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      const release = this.ideaReleases.get(releaseId);
-      if (release) {
-        release.tipAmount = tipAmount;
-        release.tipTransactionId = transactionId;
-        
-        // Create notification for tip recipient
-        socialService.createNotification(release.originalOwnerId, {
-          type: 'tip_received',
-          title: 'Tip Received!',
-          message: `received a $${tipAmount} tip for collaborating`,
-          fromUserId: release.releasedToUserId,
-          metadata: { tipAmount, transactionId, releaseId }
-        });
-      }
-
-      return {
-        success: true,
-        transactionId,
-        message: `Successfully sent $${tipAmount} tip!`
-      };
-    } catch (error) {
-      console.error('Failed to process tip payment:', error);
-      return {
-        success: false,
-        message: 'Failed to process tip payment. Please try again.'
-      };
-    }
   }
 }
 
