@@ -40,14 +40,18 @@ const LoginPage: React.FC = () => {
 
         {/* Header */}
         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 text-center">
-          <div className="flex justify-center mb-3">
-            <img 
-              src="/Logo.png" 
-              alt="CreativePro Logo" 
-              className="w-16 h-16 object-contain"
-            />
+          <div className="flex justify-center mb-4">
+            <div className="relative">
+              <img 
+                src="/Logo.png" 
+                alt="CreativePro Logo" 
+                className="w-20 h-20 object-contain rounded-full shadow-lg ring-4 ring-white/20"
+              />
+              {/* Soft glow effect */}
+              <div className="absolute inset-0 rounded-full bg-white/10 blur-sm -z-10"></div>
+            </div>
           </div>
-          <h1 className="text-white text-2xl font-bold">CreativePro</h1>
+          <h1 className="text-white text-3xl font-bold">CreativePro</h1>
           <p className="text-indigo-100 mt-1">Share and validate startup ideas</p>
         </div>
 
