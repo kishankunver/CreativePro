@@ -46,7 +46,7 @@ export interface Follow {
 
 export interface ActivityFeedItem {
   id: string;
-  type: 'idea_posted' | 'idea_upvoted' | 'comment_posted' | 'user_followed' | 'idea_bookmarked' | 'achievement_earned';
+  type: 'idea_posted' | 'idea_upvoted' | 'comment_posted' | 'user_followed' | 'idea_bookmarked' | 'achievement_earned' | 'collaboration_requested' | 'collaboration_accepted' | 'idea_released';
   userId: string;
   user: User;
   targetId?: string; // ID of idea, comment, or user being acted upon
@@ -65,7 +65,7 @@ export interface ActivityFeedItem {
 export interface Notification {
   id: string;
   userId: string;
-  type: 'follow' | 'idea_upvote' | 'comment' | 'mention' | 'achievement' | 'idea_featured';
+  type: 'follow' | 'idea_upvote' | 'comment' | 'mention' | 'achievement' | 'idea_featured' | 'collaboration_request' | 'collaboration_accepted' | 'collaboration_declined' | 'tip_received';
   title: string;
   message: string;
   actionUrl?: string;
@@ -97,6 +97,33 @@ export interface SocialInteraction {
   targetType: 'idea' | 'comment' | 'activity';
   createdAt: Date;
   metadata?: any;
+}
+
+// New Collaboration Types
+export interface CollaborationRequest {
+  id: string;
+  ideaId: string;
+  fromUserId: string;
+  toUserId: string;
+  message: string;
+  skills: string[]; // [Design], [Dev], [Marketing], etc.
+  suggestedTipAmount?: number;
+  status: 'pending' | 'accepted' | 'declined';
+  createdAt: Date;
+  respondedAt?: Date;
+  responseMessage?: string;
+}
+
+export interface IdeaRelease {
+  id: string;
+  ideaId: string;
+  originalOwnerId: string;
+  releasedToUserId: string;
+  collaborationRequestId: string;
+  releasedAt: Date;
+  tipAmount?: number;
+  tipTransactionId?: string;
+  releaseNotes?: string;
 }
 
 export interface VerificationBadge {
@@ -254,6 +281,11 @@ export interface Idea {
   originalityProof?: OriginalityProof;
   priorArtReferences?: PriorArtReference[];
   similarIdeas?: string[]; // IDs of similar ideas found during submission
+  // New Collaboration Fields
+  releasedTo?: string; // User ID who the idea was released to
+  releasedAt?: Date;
+  releaseData?: IdeaRelease;
+  collaborationRequests?: CollaborationRequest[];
 }
 
 export interface PriorArtReference {

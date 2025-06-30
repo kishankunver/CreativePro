@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Calendar, Edit, X, ThumbsUp, MessageCircle, Bookmark, Users, Activity } from 'lucide-react';
+import { Calendar, Edit, X, ThumbsUp, MessageCircle, Bookmark, Users, Activity, Handshake } from 'lucide-react';
 import Header from '../components/Header';
 import IdeaCard from '../components/IdeaCard';
 import FollowButton from '../components/FollowButton';
 import ActivityFeed from '../components/ActivityFeed';
+import CollaborationRequestsInbox from '../components/CollaborationRequestsInbox';
 import { useAuth } from '../contexts/AuthContext';
 import { useIdeas } from '../contexts/IdeaContext';
 import { socialService } from '../services/social';
+import { collaborationService } from '../services/collaboration';
 
 const UserProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const { user } = useAuth();
   const { ideas, getUserById } = useIdeas();
-  const [activeTab, setActiveTab] = useState<'ideas' | 'activity' | 'followers' | 'following'>('ideas');
+  const [activeTab, setActiveTab] = useState<'ideas' | 'activity' | 'followers' | 'following' | 'collaboration'>('ideas');
 
   // Get the profile user by userId from URL params
   const profileUser = userId ? getUserById(userId) : null;
@@ -24,6 +26,9 @@ const UserProfilePage: React.FC = () => {
   const followerCount = socialService.getFollowerCount(userId || '');
   const followingCount = socialService.getFollowingCount(userId || '');
   const isFollowing = user ? socialService.isFollowing(user.id, userId || '') : false;
+
+  // Get collaboration stats
+  const collaborationStats = userId ? collaborationService.getCollaborationStats(userId) : null;
 
   if (!profileUser) {
     return (
@@ -112,6 +117,12 @@ const UserProfilePage: React.FC = () => {
                       <Activity className="h-4 w-4" />
                       <span>{userIdeas.length} ideas</span>
                     </div>
+                    {collaborationStats && (
+                      <div className="flex items-center space-x-1">
+                        <Handshake className="h-4 w-4" />
+                        <span>{collaborationStats.ideasReleased + collaborationStats.ideasReceived} collaborations</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -141,6 +152,18 @@ const UserProfilePage: React.FC = () => {
                   >
                     Activity
                   </button>
+                  {isOwnProfile && (
+                    <button
+                      onClick={() => setActiveTab('collaboration')}
+                      className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
+                        activeTab === 'collaboration'
+                          ? 'text-indigo-600 border-indigo-600'
+                          : 'text-gray-500 hover:text-gray-700 hover:border-gray-300 border-transparent'
+                      }`}
+                    >
+                      Collaboration ({collaborationStats ? collaborationService.getCollaborationRequestsForUser(userId!).filter(r => r.status === 'pending').length : 0})
+                    </button>
+                  )}
                   <button
                     onClick={() => setActiveTab('followers')}
                     className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm transition-colors ${
@@ -189,6 +212,11 @@ const UserProfilePage: React.FC = () => {
                 {/* Activity Tab */}
                 {activeTab === 'activity' && (
                   <ActivityFeed userId={userId} limit={20} />
+                )}
+
+                {/* Collaboration Tab */}
+                {activeTab === 'collaboration' && isOwnProfile && (
+                  <CollaborationRequestsInbox />
                 )}
 
                 {/* Followers Tab */}
@@ -289,6 +317,18 @@ const UserProfilePage: React.FC = () => {
                   <span className="text-gray-600">Member Since</span>
                   <span className="font-medium">{profileUser.joinedAt.getFullYear()}</span>
                 </div>
+                {collaborationStats && (
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Ideas Released</span>
+                      <span className="font-medium">{collaborationStats.ideasReleased}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Ideas Received</span>
+                      <span className="font-medium">{collaborationStats.ideasReceived}</span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

@@ -52,7 +52,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ideas: [],
         followers: 342,
         following: 128,
-        joinedAt: new Date('2023-01-15')
+        joinedAt: new Date('2023-01-15'),
+        verificationStatus: 'unverified'
       };
       
       setUser(mockUser);
@@ -78,7 +79,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ideas: [],
         followers: 0,
         following: 0,
-        joinedAt: new Date()
+        joinedAt: new Date(),
+        verificationStatus: 'unverified'
       };
       
       setUser(mockUser);

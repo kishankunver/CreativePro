@@ -7,6 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import RecommendationsSection from '../components/RecommendationsSection';
 import ActivityFeed from '../components/ActivityFeed';
 import SuggestedUsers from '../components/SuggestedUsers';
+import SubscriptionStatus from '../components/SubscriptionStatus';
 import { useIdeas } from '../contexts/IdeaContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Category, SortOption } from '../types';
@@ -185,6 +186,9 @@ const HomePage: React.FC = () => {
 
           {/* Sidebar */}
           <div className="lg:col-span-1 xl:col-span-1 space-y-6 lg:space-y-8">
+            {/* Subscription Status - Only show for logged in users */}
+            {user && <SubscriptionStatus />}
+
             {/* Suggested Users */}
             {user && <SuggestedUsers limit={4} />}
 
