@@ -31,7 +31,7 @@ class DemoNotificationService {
         id: `demo_tip_${requestId}`,
         type: 'tip_received',
         title: '💝 Tip Received!',
-        message: `${ideaOwnerName} sent you a $${tipAmount} tip for the collaboration!`,
+        message: `${ideaOwnerName} accepted your $${tipAmount} tip for the collaboration!`,
         delay: 10, // 5 seconds after acceptance
         executed: false
       }
