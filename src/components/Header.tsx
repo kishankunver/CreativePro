@@ -36,7 +36,7 @@ const Header: React.FC = () => {
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
               <Plus className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 text-white" />
             </div>
-            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">CreativePro</span>
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">CreativePros</span>
           </Link>
 
           {/* Desktop Search Bar */}
