@@ -190,10 +190,10 @@ const HomePage: React.FC = () => {
 
             {/* Activity Feed */}
             <div className="lg:sticky lg:top-24 xl:top-32">
-  <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 lg:p-8">
-    <ActivityFeed showFollowingOnly={!!user} limit={6} />
-  </div>
-</div>
+              <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 lg:p-8">
+                <ActivityFeed showFollowingOnly={!!user} limit={6} />
+              </div>
+            </div>
 
           </div>
         </div>
