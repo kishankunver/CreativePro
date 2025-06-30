@@ -57,8 +57,8 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
     switch (type) {
       case 'idea_posted':
         return <Lightbulb className="h-5 w-5 text-yellow-500" />;
-      /*case 'idea_upvoted':
-        return <TrendingUp className="h-5 w-5 text-green-500" />;*/
+      case 'idea_upvoted':
+        return <TrendingUp className="h-5 w-5 text-green-500" />;
       case 'comment_posted':
         return <MessageCircle className="h-5 w-5 text-blue-500" />;
       case 'user_followed':
