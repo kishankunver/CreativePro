@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../types';
-import { supabase } from '../services/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -25,80 +24,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        const mockUser: User = {
-          id: session.user.id,
-          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
-          email: session.user.email || '',
-          bio: 'Passionate entrepreneur and innovator',
-          karma: 1250,
-          ideas: [],
-          followers: 342,
-          following: 128,
-          joinedAt: new Date(session.user.created_at),
-          verificationStatus: 'unverified'
-        };
-        setUser(mockUser);
+    // Check for stored user session
+    const storedUser = localStorage.getItem('creativepro_user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      // Convert joinedAt string back to Date object
+      if (parsedUser.joinedAt) {
+        parsedUser.joinedAt = new Date(parsedUser.joinedAt);
       }
-      setIsLoading(false);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        const mockUser: User = {
-          id: session.user.id,
-          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
-          email: session.user.email || '',
-          bio: 'Passionate entrepreneur and innovator',
-          karma: 1250,
-          ideas: [],
-          followers: 342,
-          following: 128,
-          joinedAt: new Date(session.user.created_at),
-          verificationStatus: 'unverified'
-        };
-        setUser(mockUser);
-      } else {
-        setUser(null);
-      }
-      setIsLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+      setUser(parsedUser);
+    }
+    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const mockUser: User = {
+        id: '1',
+        name: 'Alex Chen',
         email,
-        password,
-      });
-
-      if (error) throw error;
-
-      if (data.user) {
-        const mockUser: User = {
-          id: data.user.id,
-          name: data.user.user_metadata?.name || data.user.email?.split('@')[0] || 'User',
-          email: data.user.email || '',
-          bio: 'Passionate entrepreneur and innovator',
-          karma: 1250,
-          ideas: [],
-          followers: 342,
-          following: 128,
-          joinedAt: new Date(data.user.created_at),
-          verificationStatus: 'unverified'
-        };
-        setUser(mockUser);
-      }
+        bio: 'Passionate entrepreneur and innovator',
+        karma: 1250,
+        ideas: [],
+        followers: 342,
+        following: 128,
+        joinedAt: new Date('2023-01-15'),
+        verificationStatus: 'unverified'
+      };
+      
+      setUser(mockUser);
+      localStorage.setItem('creativepro_user', JSON.stringify(mockUser));
     } catch (error) {
-      throw error;
+      throw new Error('Login failed');
     } finally {
       setIsLoading(false);
     }
@@ -107,43 +68,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signup = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const mockUser: User = {
+        id: Date.now().toString(),
+        name,
         email,
-        password,
-        options: {
-          data: {
-            name: name,
-          },
-        },
-      });
-
-      if (error) throw error;
-
-      if (data.user) {
-        const mockUser: User = {
-          id: data.user.id,
-          name: name,
-          email: data.user.email || '',
-          bio: 'New to CreativePro',
-          karma: 0,
-          ideas: [],
-          followers: 0,
-          following: 0,
-          joinedAt: new Date(),
-          verificationStatus: 'unverified'
-        };
-        setUser(mockUser);
-      }
+        karma: 0,
+        ideas: [],
+        followers: 0,
+        following: 0,
+        joinedAt: new Date(),
+        verificationStatus: 'unverified'
+      };
+      
+      setUser(mockUser);
+      localStorage.setItem('creativepro_user', JSON.stringify(mockUser));
     } catch (error) {
-      throw error;
+      throw new Error('Signup failed');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = async () => {
-    await supabase.auth.signOut();
+  const logout = () => {
     setUser(null);
+    localStorage.removeItem('creativepro_user');
   };
 
   return (

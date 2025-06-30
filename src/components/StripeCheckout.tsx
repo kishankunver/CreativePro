@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Heart, Loader } from 'lucide-react';
+import { Heart, Loader, ExternalLink } from 'lucide-react';
 import { stripeProducts } from '../stripe-config';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../services/supabase';
 
 interface StripeCheckoutProps {
   className?: string;
@@ -11,53 +10,28 @@ interface StripeCheckoutProps {
 const StripeCheckout: React.FC<StripeCheckoutProps> = ({ className = '' }) => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleCheckout = async (priceId: string, mode: 'payment' | 'subscription') => {
     if (!user) {
-      setError('Please log in to make a purchase');
+      alert('Please log in to make a purchase');
       return;
     }
 
     setIsLoading(true);
-    setError(null);
 
     try {
-      // Get the current session token
-      const { data: { session } } = await supabase.auth.getSession();
+      // Simulate checkout process
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      if (!session?.access_token) {
-        throw new Error('No valid session found. Please log in again.');
-      }
-
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stripe-checkout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          price_id: priceId,
-          mode,
-          success_url: `${window.location.origin}/checkout/success`,
-          cancel_url: `${window.location.origin}/checkout/cancel`,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create checkout session');
-      }
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
+      // In a real implementation, this would redirect to Stripe Checkout
+      // For demo purposes, we'll show a success message
+      alert(`Demo: Checkout initiated for ${priceId}. In production, this would redirect to Stripe Checkout.`);
+      
+      // Simulate redirect to success page
+      window.location.href = '/checkout/success?demo=true';
     } catch (err) {
       console.error('Checkout error:', err);
-      setError(err instanceof Error ? err.message : 'An error occurred during checkout');
+      alert('Checkout failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -73,11 +47,18 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ className = '' }) => {
         </p>
       </div>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-700 text-sm">{error}</p>
+      {/* Demo Notice */}
+      <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="flex items-start space-x-2">
+          <ExternalLink className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-blue-800 text-sm font-medium">Demo Mode</p>
+            <p className="text-blue-700 text-xs">
+              This is a demonstration. Real Stripe integration requires backend setup.
+            </p>
+          </div>
         </div>
-      )}
+      </div>
 
       <div className="space-y-4">
         {stripeProducts.map((product) => (

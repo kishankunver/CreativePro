@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Sparkles, ExternalLink, Zap, CheckCircle, Search, Building, FileText, TrendingUp, CreditCard } from 'lucide-react';
+import { X, Sparkles, ExternalLink, Zap, CheckCircle, Search, Building, FileText, TrendingUp } from 'lucide-react';
 import { aiService } from '../services/ai';
 import { researchService } from '../services/research';
 
@@ -9,19 +9,18 @@ const AISetupBanner: React.FC = () => {
   const aiConfigured = aiService.isConfigured();
   const researchConfigured = researchService.isConfigured();
   const fullyConfigured = aiConfigured && researchConfigured;
-  const stripeConfigured = !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
 
   if (!isVisible) {
-    if (fullyConfigured && stripeConfigured) {
+    if (fullyConfigured) {
       return (
         <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-3">
           <div className="container mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <CheckCircle className="h-5 w-5" />
               <div>
-                <span className="font-semibold">Full Platform Active</span>
+                <span className="font-semibold">Full AI Research Suite Active</span>
                 <span className="text-sm opacity-90 ml-2">
-                  AI research, payments, and all features enabled
+                  Real-time web search, patent analysis, company research, and market intelligence enabled
                 </span>
               </div>
             </div>
@@ -45,9 +44,9 @@ const AISetupBanner: React.FC = () => {
           <div className="flex items-center space-x-3">
             <Sparkles className="h-6 w-6" />
             <div>
-              <h3 className="font-semibold text-lg">Complete Platform Setup</h3>
+              <h3 className="font-semibold text-lg">Enable AI-Powered Market Research Suite</h3>
               <p className="text-sm opacity-90">
-                Enable AI research, payments, and all premium features
+                Get comprehensive startup validation with real-time web search, patent analysis, and competitive intelligence
               </p>
             </div>
           </div>
@@ -60,7 +59,7 @@ const AISetupBanner: React.FC = () => {
         </div>
 
         {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <div className="bg-white bg-opacity-10 rounded-lg p-3">
             <div className="flex items-center space-x-2 mb-2">
               <Search className="h-4 w-4" />
@@ -121,21 +120,6 @@ const AISetupBanner: React.FC = () => {
               </span>
             </div>
           </div>
-
-          <div className="bg-white bg-opacity-10 rounded-lg p-3">
-            <div className="flex items-center space-x-2 mb-2">
-              <CreditCard className="h-4 w-4" />
-              <span className="font-medium text-sm">Payments</span>
-            </div>
-            <p className="text-xs opacity-80">Stripe integration for tips and subscriptions</p>
-            <div className="mt-2">
-              <span className={`text-xs px-2 py-1 rounded ${
-                stripeConfigured ? 'bg-green-500' : 'bg-red-500'
-              }`}>
-                {stripeConfigured ? 'Configured' : 'Setup Required'}
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* Setup Links */}
@@ -176,19 +160,19 @@ const AISetupBanner: React.FC = () => {
           </a>
 
           <a
-            href="https://stripe.com/docs"
+            href="https://newsapi.org/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center space-x-1 bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm font-medium transition"
           >
-            <CreditCard className="h-3 w-3" />
-            <span>Stripe Setup</span>
+            <TrendingUp className="h-3 w-3" />
+            <span>News API</span>
             <ExternalLink className="h-3 w-3" />
           </a>
         </div>
 
         <div className="mt-3 text-xs opacity-80">
-          💡 <strong>Pro Tip:</strong> Start with Supabase + OpenRouter for core features, then add research APIs and Stripe for the complete experience
+          💡 <strong>Pro Tip:</strong> Start with OpenRouter + SerpAPI for basic AI + web search, then add other APIs for comprehensive market research
         </div>
       </div>
     </div>

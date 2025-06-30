@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { CheckCircle, ArrowRight, Home, Heart } from 'lucide-react';
+import { CheckCircle, ArrowRight, Home, Heart, Info } from 'lucide-react';
 import Header from '../components/Header';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -9,7 +9,7 @@ const CheckoutSuccessPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   
-  const sessionId = searchParams.get('session_id');
+  const isDemo = searchParams.get('demo') === 'true';
 
   useEffect(() => {
     // Simulate a brief loading period to show the success animation
@@ -48,12 +48,28 @@ const CheckoutSuccessPage: React.FC = () => {
               <div className="animate-bounce">
                 <CheckCircle className="h-16 w-16 text-white mx-auto mb-4" />
               </div>
-              <h1 className="text-2xl font-bold text-white mb-2">Payment Successful!</h1>
+              <h1 className="text-2xl font-bold text-white mb-2">
+                {isDemo ? 'Demo Success!' : 'Payment Successful!'}
+              </h1>
               <p className="text-green-100">Thank you for your support</p>
             </div>
 
             {/* Success Content */}
             <div className="p-8">
+              {isDemo && (
+                <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start space-x-2">
+                    <Info className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-blue-800 text-sm font-medium">Demo Mode</p>
+                      <p className="text-blue-700 text-xs">
+                        This is a demonstration. No actual payment was processed.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="text-center mb-6">
                 <Heart className="h-12 w-12 text-red-500 mx-auto mb-4" />
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
@@ -64,17 +80,10 @@ const CheckoutSuccessPage: React.FC = () => {
                 </p>
               </div>
 
-              {sessionId && (
-                <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-gray-600 mb-1">Transaction ID:</p>
-                  <p className="text-xs font-mono text-gray-800 break-all">{sessionId}</p>
-                </div>
-              )}
-
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h3 className="font-medium text-blue-800 mb-2">What happens next?</h3>
                 <ul className="text-sm text-blue-700 space-y-1">
-                  <li>• You'll receive a confirmation email shortly</li>
+                  <li>• {isDemo ? 'In production, you\'d' : 'You\'ll'} receive a confirmation email</li>
                   <li>• Your support helps fund platform improvements</li>
                   <li>• Contributors are motivated by your generosity</li>
                   <li>• The community grows stronger together</li>
